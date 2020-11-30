@@ -1,0 +1,23 @@
+name: "Select 1"
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  SetEnv:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        ruby <<EOF
+        require "yaml"
+        dict = {
+          "GITHUB_REF" => ENV["GITHUB_REF"],
+          "SELECT" => "1"
+        }
+        File.write("environment.yaml", YAML.dump(dict))
+        EOF
+    - uses: actions/upload-artifact@v2
+      with:
+        name: environment
+        path: environment.yaml
+
